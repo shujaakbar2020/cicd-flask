@@ -6,9 +6,14 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-                sh "docker build -t saakbar/api1:v1 ."
-                sh "docker login -u saakbar -p 1Imrannazir"
-                sh "docker push saakbar/api1:v1"
+                script {
+                    def gitCommit= sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    def gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    def imageTag = "${IMAGE_NAME}:${gitBranch}-${gitCommit}"
+                    sh "docker build -t ${imageTag} ."
+                    sh "docker login -u saakbar -p 1Imrannair"
+                    sh "docker push ${imageTag}"
+                }
             }
         }
     }
