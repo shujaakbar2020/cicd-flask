@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        IMAGE_NAME='saakbar/flask'
+    }
     stages {
         stage("Build") {
             steps {
